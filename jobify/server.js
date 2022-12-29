@@ -1,6 +1,8 @@
 import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./db/connect.js"
+import authRouter from "./routes/authRoutes.js"
+import jobsRouter from "./routes/jobsRoutes.js"
 
 dotenv.config()
 
@@ -10,11 +12,16 @@ const app = express()
 import notFoundMiddleware from "./middleware/not-found.js"
 import errorHandlerMiddleware from "./middleware/error-handler.js"
 
+app.use(express.json())
+
 app.get("/", (req, res) => {
     // throw new Error("error")
 
     res.send("Welcome!")
 })
+
+app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/jobs", jobsRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
